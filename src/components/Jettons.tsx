@@ -76,12 +76,33 @@ export function Jetton() {
       >
         Get jettons from faucet
       </button>
+      <button
+        onClick={async () => {
+          const BURN = 0x595f07bc;
+          const burnBody = beginCell()
+            .storeUint(BURN, 32)
+            .storeUint(0, 64)
+            .storeCoins(toNano(64.1))
+            .storeAddress(userAddress)
+            .storeRefMaybe(null)
+            .endCell();
+
+          await sendTxn(
+            Address.parse(jettonWalletAddress!),
+            toNano(0.05),
+            burnBody
+          );
+        }}
+      >
+        Burn 64.1 JETTONS
+      </button>
       <h4>
         Jetton address:{" "}
         {isFetchingJettonWalletAddress ? "Loading..." : jettonWalletAddress}
       </h4>
       <h4>
-        Jetton balance: {isFetchingJettonBalance ? "Loading..." : jettonBalance}
+        Jetton MODIFIED balance:{" "}
+        {isFetchingJettonBalance ? "Loading..." : jettonBalance}
       </h4>
     </Card>
   );
